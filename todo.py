@@ -6,6 +6,20 @@ from bottle import default_app
 @route('/')
 @route('/todo')
 def todo_list():
+    message = ""
+    if request.GET.get('save','').strip():
+
+        new = request.GET.get('task', '').strip()
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+
+        c.execute("INSERT INTO todo (task,status) VALUES (?,?)", (new,1))
+        new_id = c.lastrowid
+
+        conn.commit()
+        c.close()
+
+        message = 'The new task was inserted into the database, the ID is %s' % new_id
 
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
@@ -13,7 +27,7 @@ def todo_list():
     result = c.fetchall()
     c.close()
 
-    output = template('make_table', rows=result)
+    output = template('make_table', rows=result, message=message)
     return output
 
 @route('/new', method='GET')
