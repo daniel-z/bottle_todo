@@ -31,14 +31,15 @@
       <!-- content -->
       <div class="row">
         <div class="col-xs-12">
-
           <div class="row">
             <div class="col-xs-12 col-sm-6">
-              <p>Add a new task to the ToDo list:</p>
-              <form action="/" method="GET">
+              <form action="/" method="GET" class="add-task">
                 <div class="form-group">
                   <input class="form-control" placeholder="Task Description" type="text" size="100" maxlength="100" name="task">
-                  <input class="btn btn-default" type="submit" name="save" value="save">
+                  <button class="btn btn-default" type="submit" name="save">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Add New Task
+                  </button>
                 </div>
               </form>
             </div>
