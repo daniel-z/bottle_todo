@@ -46,11 +46,11 @@ def updateTask (params):
 @route('/')
 @route('/todo')
 def todo_list():
-    username = request.get_cookie('username')
+    username = "!"
     message = ""
 
-    if username:
-        message = "Welcome " + username
+    if request.get_cookie('username'):
+        username = request.get_cookie('username')
 
     if request.GET.get('save','').strip():
         createNewTask = validateDecorator(insertNewTask)
@@ -68,7 +68,7 @@ def todo_list():
     result = c.fetchall()
     c.close()
 
-    output = template('make_table', rows=result, message=message)
+    output = template('make_table', rows=result, loggeduser=username)
     return output
 
 @route('/login', method='GET')
@@ -175,6 +175,10 @@ def updateDatabase ():
     c.execute("ALTER TABLE todo ADD COLUMN last_edited_by TEXT")
     result = c.fetchall()
     c.close()
+
+@route('/static/<filename:path>')
+def static(filename):
+    return static_file(filename, root='static/')
 
 databaseCheck()
 debug(True)
