@@ -43,6 +43,9 @@ def updateTask (params):
     conn.commit()
     c.close()
 
+# ----------------------------------------------------------------
+# MAIN PAGE
+# ----------------------------------------------------------------
 @route('/')
 @route('/todo')
 def todo_list():
@@ -73,6 +76,9 @@ def todo_list():
     output = template('make_table', rows=result, loggeduser=username, message=message)
     return output
 
+# ----------------------------------------------------------------
+# LOGIN PAGE
+# ----------------------------------------------------------------
 @route('/login', method='GET')
 def login():
     if request.GET.get('login','').strip():
@@ -82,6 +88,9 @@ def login():
             redirect("/")
     return template('login')
 
+# ----------------------------------------------------------------
+# NEW PAGE
+# ----------------------------------------------------------------
 @route('/new', method='GET')
 def new_item():
     if request.GET.get('save','').strip():
@@ -91,6 +100,9 @@ def new_item():
     else:
         return template('new_task')
 
+# ----------------------------------------------------------------
+# EDIT PAGE
+# ----------------------------------------------------------------
 @route('/edit/<no:int>', method='GET')
 def edit_item(no):
 
@@ -109,6 +121,9 @@ def edit_item(no):
 
         return template('edit_task', old = cur_data, no = no)
 
+# ----------------------------------------------------------------
+# ITEM PAGE
+# ----------------------------------------------------------------
 @route('/item<item:re:[0-9]+>')
 def show_item(item):
 
@@ -130,9 +145,11 @@ def show_item(item):
 
     return 'Task: %s' %result[0]
 
+# ----------------------------------------------------------------
+# JSON PAGE
+# ----------------------------------------------------------------
 @route('/json<json:re:[0-9]+>')
 def show_json(json):
-
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
     c.execute("SELECT task FROM todo WHERE id LIKE ?", (json))
@@ -142,9 +159,11 @@ def show_json(json):
     if not result:
         return {'task':'This item number does not exist!'}
     else:
-        return {'Task': result[0]}
+        return {'Task': result[0][0]}
 
-
+# ----------------------------------------------------------------
+# ERRORS PAGE
+# ----------------------------------------------------------------
 @error(403)
 def mistake403(code):
     return 'There is a mistake in your url!'
@@ -157,6 +176,16 @@ def mistake404(code):
 def error401(error):
     return template('login', msg='Need to login first!')
 
+# ----------------------------------------------------------------
+# SERVE STATIC FILES
+# ----------------------------------------------------------------
+@route('/static/<filename:path>')
+def static(filename):
+    return static_file(filename, root='static/')
+
+# ----------------------------------------------------------------
+# DATABASE FUNCTIONS
+# ----------------------------------------------------------------
 def databaseCheck ():
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
@@ -172,10 +201,6 @@ def updateDatabase ():
     c.execute("ALTER TABLE todo ADD COLUMN last_edited_by TEXT")
     result = c.fetchall()
     c.close()
-
-@route('/static/<filename:path>')
-def static(filename):
-    return static_file(filename, root='static/')
 
 databaseCheck()
 debug(True)
