@@ -47,7 +47,7 @@ def updateTask (params):
 @route('/todo')
 def todo_list():
     username = ""
-    message = ""
+    message = request.GET.get('message','').strip()
 
     if request.get_cookie('username'):
         username = request.get_cookie('username')
@@ -56,11 +56,13 @@ def todo_list():
         createNewTask = validateDecorator(insertNewTask)
         task = request.GET.get('task', '').strip()
         message = 'The new task was inserted into the database, the ID is %s' % createNewTask({'task': task})
-
+        redirect('/?message='+message)
     elif request.GET.get('delete','').strip():
         deleteTask = validateDecorator(removeTask)
         id = request.GET.get('id', '').strip()
         deleteTask({'id': id})
+        message = 'Task: %s removed, successfully' %id
+        redirect('/?message='+message)
 
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
@@ -68,7 +70,7 @@ def todo_list():
     result = c.fetchall()
     c.close()
 
-    output = template('make_table', rows=result, loggeduser=username)
+    output = template('make_table', rows=result, loggeduser=username, message=message)
     return output
 
 @route('/login', method='GET')
@@ -97,8 +99,8 @@ def edit_item(no):
         status = request.GET.get('status','').strip()
         editTask = validateDecorator(updateTask);
         editTask({'edit': edit, 'status': status, 'number': no})
-        return '<p>The item number %s was successfully updated</p>' %no
-
+        message = 'The item number %s was successfully updated' %no
+        redirect('/?message='+message)
     else:
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()

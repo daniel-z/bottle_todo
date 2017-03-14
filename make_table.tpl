@@ -47,29 +47,42 @@
             </div>
           </div>
 
-          <p>Open items:</p>
-
-          <table id="open-items">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Task</th>
-                <th>Last Edited By</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-          %for row in rows:
-            <tr>
-            %for col in row:
-              <td>{{col}}</td>
-            %end
-              <td>
-                <a class="btn btn-default" href="/edit/{{row[0]}}"><i class="glyphicon glyphicon-pencil"></i></a>
-                <a class="btn btn-danger" href="/?id={{row[0]}}&delete=delete"><i class="glyphicon glyphicon-trash"></i></a>
-              </td>
-            </tr>
+          %if message:
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8">
+              <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{message}}
+              </div>
+            </div>
+          </div>
           %end
-          </table>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8">
+
+              <table id="open-items">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Task</th>
+                    <th>Last Edited By</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+              %for row in rows:
+                <tr>
+                %for col in row:
+                  <td>{{col}}</td>
+                %end
+                  <td>
+                    <a class="btn btn-default" href="/edit/{{row[0]}}"><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a class="btn btn-danger" href="/?id={{row[0]}}&delete=delete"><i class="glyphicon glyphicon-trash"></i></a>
+                  </td>
+                </tr>
+              %end
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
