@@ -1,8 +1,25 @@
 import sqlite3
-from bottle import route, run, debug, template, request, response, redirect, static_file, error
+from bottle import route, run, debug, template, request, response, redirect, static_file, error, abort
 
 # only needed when you run Bottle on mod_wsgi
 from bottle import default_app
+
+def validateDecorator (writeFnc):
+    def validateAndExecute (params):
+        username = request.get_cookie('username')
+        if not username:
+            abort(401, "Sorry, access denied.")
+        return writeFnc(params)
+    return validateAndExecute;
+
+def insertNewTask (params):
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO todo (task,status) VALUES (?,?)", (params['task'],1))
+    new_id = c.lastrowid
+    conn.commit()
+    c.close()
+    return new_id
 
 @route('/')
 @route('/todo')
@@ -14,18 +31,9 @@ def todo_list():
         message = "Welcome " + username
 
     if request.GET.get('save','').strip():
-
-        new = request.GET.get('task', '').strip()
-        conn = sqlite3.connect('todo.db')
-        c = conn.cursor()
-
-        c.execute("INSERT INTO todo (task,status) VALUES (?,?)", (new,1))
-        new_id = c.lastrowid
-
-        conn.commit()
-        c.close()
-
-        message = 'The new task was inserted into the database, the ID is %s' % new_id
+        createNewTask = validateDecorator(insertNewTask)
+        task = request.GET.get('task', '').strip()
+        message = 'The new task was inserted into the database, the ID is %s' % createNewTask({'task': task})
 
     elif request.GET.get('delete','').strip():
         deleteId = request.GET.get('id', '').strip()
@@ -151,6 +159,9 @@ def mistake403(code):
 def mistake404(code):
     return 'Sorry, this page does not exist!'
 
+@error(401)
+def error401(error):
+    return template('login', msg='Need to login first!')
 
 debug(True)
 run(reloader=True)
