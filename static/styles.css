@@ -1,3 +1,54 @@
 body {
-
+  font-family: 'Roboto Condensed', sans-serif;
 }
+
+/*
+font-family: 'Exo', sans-serif;
+font-family: 'Passion One', cursive;
+font-family: 'Roboto Condensed', sans-serif;
+font-family: 'Scope One', serif;
+font-family: 'Montserrat', sans-serif;
+
+*/
+.main-page .header h1,
+.main-page .header h2,
+.main-page .header h3,
+.main-page .header h4,
+.main-page .header h5,
+.main-page .header h6 {
+  font-family: 'Scope One', serif;
+  font-weight: normal;
+}
+
+.main-page .header h1 {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+.main-page .header h1 span {
+  display: inline-block;
+  padding: 10px;
+}
+.main-page .header h1 span.main {
+  background-color: red;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
+.main-page .header h1 span.secondary {
+  position: relative;
+  left: -15px;
+}
+
+.main-page .header h3 {
+  font-size: 26px;
+  margin: 10px 0;
+}
+.main-page .header p {
+  font-size: 20px;
+  color: #844bad;
+}
+
+
+
+.main-page table {}
+.main-page table th {}
+.main-page table tr {}
