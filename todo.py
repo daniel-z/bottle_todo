@@ -153,7 +153,8 @@ def databaseCheck ():
     c.execute("PRAGMA table_info(todo)")
     result = c.fetchall()
     c.close()
-    if result[3][1] != 'last_edited_by':
+    # 3 columns, needs to be updated to add a 4th
+    if result and len(result) == 3:
         updateDatabase()
 
 def updateDatabase ():
