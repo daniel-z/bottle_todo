@@ -1,0 +1,133 @@
+body {
+  font-family: 'Scope One', serif;
+}
+
+/*
+font-family: 'Exo', sans-serif;
+font-family: 'Passion One', cursive;
+font-family: 'Roboto Condensed', sans-serif;
+font-family: 'Scope One', serif;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Roboto Condensed', sans-serif;
+
+*/
+.header h1,
+.header h2,
+.header h3,
+.header h4,
+.header h5,
+.header h6 {
+  font-family: 'Scope One', serif;
+  font-weight: normal;
+}
+
+.header h1 {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+.header h1 span {
+  display: inline-block;
+  padding: 10px;
+}
+.header h1 span.main {
+  background-color: #c12e2a;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
+.header h1 span.secondary {
+  position: relative;
+  left: -15px;
+}
+
+.header h2 {
+  font-size: 26px;
+  margin: 10px 0;
+  display: inline-block;
+  margin-right: 10px;
+}
+.header .user {
+  font-size: 20px;
+  color: #844bad;
+}
+
+.main-page form.add-task input {
+  width: 75%;
+  display: inline-block;
+}
+.main-page form.add-task button[type="submit"] {
+  width: 24%;
+  display: inline-block;
+}
+
+.main-page table {
+  border-top: 1px solid #b9b9b9;
+  border-bottom: 1px solid #b9b9b9;
+  margin: 20px 0;
+}
+.main-page table th,
+.main-page table td {
+  padding: 5px 20px;
+  text-align: left;
+}
+.main-page table th {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 16px;
+  text-shadow: none;
+  background-color: #FFE7B7;
+}
+
+.main-page table tr:hover,
+.main-page table tr:hover:nth-child(odd),
+.main-page table tr:hover:nth-child(even) {
+  background: #fff6ef;
+}
+.main-page table tr:nth-child(odd) {background: #FFF}
+.main-page table tr:nth-child(even) {background: #fff2d7}
+
+footer {
+  background-color: #c12e2a;
+  margin-top: 30px;
+  color: #fff;
+  padding: 20px;
+  font-size: 16px;
+}
+
+footer ul {
+  list-style: none;
+}
+
+footer ul li {
+  display: inline-block;
+  margin: 15px 20px;
+}
+footer ul li a {
+  color: #fff;
+}
+footer ul li hover,
+footer ul li a:hover {
+  color: #fff2d7;
+}
+
+/* Login Screen */
+.login-page input,
+.new-page input,
+.edit-page input {
+  width: 80%;
+  display: inline-block;
+}
+.login-page button,
+.new-page button,
+.edit-page button {
+  width: 19%;
+}
+
+/* Edit Screen */
+.edit-page input,
+.edit-page select
+ {
+  width: 60%;
+  display: inline-block;
+}
+.edit-page select {
+  width: 15%;
+}

@@ -46,11 +46,11 @@ def updateTask (params):
 @route('/')
 @route('/todo')
 def todo_list():
-    username = request.get_cookie('username')
+    username = ""
     message = ""
 
-    if username:
-        message = "Welcome " + username
+    if request.get_cookie('username'):
+        username = request.get_cookie('username')
 
     if request.GET.get('save','').strip():
         createNewTask = validateDecorator(insertNewTask)
@@ -68,7 +68,7 @@ def todo_list():
     result = c.fetchall()
     c.close()
 
-    output = template('make_table', rows=result, message=message)
+    output = template('make_table', rows=result, loggeduser=username)
     return output
 
 @route('/login', method='GET')
@@ -87,7 +87,7 @@ def new_item():
         task = request.GET.get('task', '').strip()
         return '<p>The new task was inserted into the database, the ID is %s</p>' % createNewTask({'task': task})
     else:
-        return template('new_task.tpl')
+        return template('new_task')
 
 @route('/edit/<no:int>', method='GET')
 def edit_item(no):
@@ -127,11 +127,6 @@ def show_item(item):
         return 'This item number does not exist!'
 
     return 'Task: %s' %result[0]
-
-@route('/help')
-def help():
-
-    static_file('help.html', root='.')
 
 @route('/json<json:re:[0-9]+>')
 def show_json(json):
@@ -175,6 +170,10 @@ def updateDatabase ():
     c.execute("ALTER TABLE todo ADD COLUMN last_edited_by TEXT")
     result = c.fetchall()
     c.close()
+
+@route('/static/<filename:path>')
+def static(filename):
+    return static_file(filename, root='static/')
 
 databaseCheck()
 debug(True)
