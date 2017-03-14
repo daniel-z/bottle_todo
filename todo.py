@@ -21,6 +21,16 @@ def todo_list():
 
         message = 'The new task was inserted into the database, the ID is %s' % new_id
 
+    elif request.GET.get('delete','').strip():
+        deleteId = request.GET.get('id', '').strip()
+
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+        c.execute("DELETE FROM todo WHERE id LIKE ?;", (str(deleteId),))
+
+        conn.commit()
+        c.close()
+
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
     c.execute("SELECT id, task FROM todo WHERE status LIKE '1';")
