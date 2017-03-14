@@ -1,12 +1,18 @@
 import sqlite3
-from bottle import route, run, debug, template, request, static_file, error
+from bottle import route, run, debug, template, request, response, redirect, static_file, error
 
 # only needed when you run Bottle on mod_wsgi
 from bottle import default_app
+
 @route('/')
 @route('/todo')
 def todo_list():
+    username = request.get_cookie('username')
     message = ""
+
+    if username:
+        message = "Welcome " + username
+
     if request.GET.get('save','').strip():
 
         new = request.GET.get('task', '').strip()
@@ -39,6 +45,15 @@ def todo_list():
 
     output = template('make_table', rows=result, message=message)
     return output
+
+@route('/login', method='GET')
+def login():
+    if request.GET.get('login','').strip():
+        username = request.GET.get('username','').strip()
+        if username:
+            response.set_cookie('username', username)
+            redirect("/")
+    return template('login')
 
 @route('/new', method='GET')
 def new_item():
