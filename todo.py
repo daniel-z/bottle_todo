@@ -9,13 +9,15 @@ def validateDecorator (writeFnc):
         username = request.get_cookie('username')
         if not username:
             abort(401, "Sorry, access denied.")
+
+        params['username'] = username
         return writeFnc(params)
     return validateAndExecute;
 
 def insertNewTask (params):
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
-    c.execute("INSERT INTO todo (task,status) VALUES (?,?)", (params['task'],1))
+    c.execute("INSERT INTO todo (task,status,last_edited_by) VALUES (?,?)", (params['task'],1,params['username']))
     new_id = c.lastrowid
     conn.commit()
     c.close()
@@ -37,7 +39,7 @@ def updateTask (params):
 
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
-    c.execute("UPDATE todo SET task = ?, status = ? WHERE id LIKE ?", (params['edit'], status, params['number']))
+    c.execute("UPDATE todo SET task = ?, status = ?, last_edited_by = ? WHERE id LIKE ?", (params['edit'], status, params['username'], params['number']))
     conn.commit()
     c.close()
 
@@ -62,7 +64,7 @@ def todo_list():
 
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
-    c.execute("SELECT id, task FROM todo WHERE status LIKE '1';")
+    c.execute("SELECT id, task, last_edited_by FROM todo WHERE status LIKE '1';")
     result = c.fetchall()
     c.close()
 
@@ -158,6 +160,23 @@ def mistake404(code):
 def error401(error):
     return template('login', msg='Need to login first!')
 
+def databaseCheck ():
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    c.execute("PRAGMA table_info(todo)")
+    result = c.fetchall()
+    c.close()
+    if result[3][1] != 'last_edited_by':
+        updateDatabase()
+
+def updateDatabase ():
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    c.execute("ALTER TABLE todo ADD COLUMN last_edited_by TEXT")
+    result = c.fetchall()
+    c.close()
+
+databaseCheck()
 debug(True)
 run(reloader=True)
 #remember to remove reloader=True and debug(True) when you move your application from development to a productive environment
