@@ -9,6 +9,9 @@
     <td>{{col}}</td>
   %end
     <td>
+      <a href="/edit/{{row[0]}}">Edit</a>
+    </td>
+    <td>
       <form>
         <input type="hidden" name="id" value="{{row[0]}}">
         <input type="submit" name="delete" value="delete">
