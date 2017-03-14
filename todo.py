@@ -154,10 +154,11 @@ def databaseCheck ():
     result = c.fetchall()
     c.close()
     # 3 columns, needs to be updated to add a 4th
-    if result and len(result) == 3:
+    if result and len(result) < 4:
         updateDatabase()
 
 def updateDatabase ():
+    print "Updating database ..."
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
     c.execute("ALTER TABLE todo ADD COLUMN last_edited_by TEXT")
