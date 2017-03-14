@@ -38,11 +38,13 @@ font-family: 'Montserrat', sans-serif;
   left: -15px;
 }
 
-.main-page .header h3 {
+.main-page .header h2 {
   font-size: 26px;
   margin: 10px 0;
+  display: inline-block;
+  margin-right: 10px;
 }
-.main-page .header p {
+.main-page .header .user {
   font-size: 20px;
   color: #844bad;
 }

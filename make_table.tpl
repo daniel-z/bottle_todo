@@ -17,11 +17,11 @@
         <div class="col-xs-12 header">
           <h1>
             <span class="main">Bottle</span>
-            <span class="secondary">Todo App</span>
+            <span class="secondary">ToDo App</span>
           </h1>
-          <h3>Manage your todo list</h3>
+          <h2>Manage your ToDo list</h2>
           %if loggeduser:
-            <p>You're logged in as: {{loggeduser}}</p>
+            <span class="user">User: {{loggeduser}}</span>
           %else:
             <p>You're not logged in, to get edit permissions login <a href="/login">here</a>.</p>
           %end
