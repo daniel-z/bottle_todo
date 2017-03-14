@@ -90,16 +90,23 @@ def edit_item(no):
 @route('/item<item:re:[0-9]+>')
 def show_item(item):
 
-        conn = sqlite3.connect('todo.db')
-        c = conn.cursor()
-        c.execute("SELECT task FROM todo WHERE id LIKE ?", (item))
-        result = c.fetchall()
-        c.close()
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    c.execute("SELECT task FROM todo WHERE id LIKE ?", (item))
+    result = c.fetchall()
+    c.close()
 
+    format = request.GET.get('format','').strip()
+    if format and format == 'json':
         if not result:
-            return 'This item number does not exist!'
-        else:
-            return 'Task: %s' %result[0]
+            return {'task':'This item number does not exist!'}
+
+        return {'Task': result[0][0]}
+
+    if not result:
+        return 'This item number does not exist!'
+
+    return 'Task: %s' %result[0]
 
 @route('/help')
 def help():
