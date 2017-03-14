@@ -21,6 +21,14 @@ def insertNewTask (params):
     c.close()
     return new_id
 
+def removeTask (params):
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM todo WHERE id LIKE ?;", (params['id'],))
+    conn.commit()
+    c.close()
+    return
+
 @route('/')
 @route('/todo')
 def todo_list():
@@ -36,14 +44,9 @@ def todo_list():
         message = 'The new task was inserted into the database, the ID is %s' % createNewTask({'task': task})
 
     elif request.GET.get('delete','').strip():
-        deleteId = request.GET.get('id', '').strip()
-
-        conn = sqlite3.connect('todo.db')
-        c = conn.cursor()
-        c.execute("DELETE FROM todo WHERE id LIKE ?;", (str(deleteId),))
-
-        conn.commit()
-        c.close()
+        deleteTask = validateDecorator(removeTask)
+        id = request.GET.get('id', '').strip()
+        deleteTask({'id': id})
 
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
