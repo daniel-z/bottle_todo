@@ -17,7 +17,7 @@ def validateDecorator (writeFnc):
 def insertNewTask (params):
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
-    c.execute("INSERT INTO todo (task,status,last_edited_by) VALUES (?,?)", (params['task'],1,params['username']))
+    c.execute("INSERT INTO todo (task,status,last_edited_by) VALUES (?,?,?)", (params['task'],1,params['username']))
     new_id = c.lastrowid
     conn.commit()
     c.close()
